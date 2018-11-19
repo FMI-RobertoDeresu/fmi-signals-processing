@@ -1,5 +1,5 @@
 import numpy as np
-from gaussian_mixture import GaussianMixture
+from project_1.gaussian_mixture import GaussianMixture
 
 
 class HMM:
@@ -118,9 +118,10 @@ class HMM:
             gamma = self._get_gamma(obs)
             xi = self._get_xi(obs)
 
+            a = np.zeros((self.n, self.n))
             for i in range(self.n):
                 for j in range(self.n):
-                    self.a[i, j] = np.sum(gamma[:, i, j]) / np.sum(gamma[:, i, :])
+                    a = np.sum(gamma[:, i, j]) / np.sum(gamma[:, i, :])
 
             for j in range(self.n):
                 for k in range(self.m):
@@ -132,6 +133,9 @@ class HMM:
                     self.b[j].mu[k] = mu
                     self.b[i].sigma[k] = sigma
 
+            self.a[i, j] = a
             # train_results[step] = self.forward(obs)
+
+            # IN PROGRESS!!
 
         return train_results
