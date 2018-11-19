@@ -39,12 +39,12 @@ class HMM:
     def _get_beta(self, obs):
         observations_size = len(obs)
         beta = np.zeros((observations_size, self.n))
-        beta[-1] = np.full(self.n, 1/self.n)
+        beta[-1] = np.full(self.n, 1)
 
         for t in range(observations_size-2, -1, -1):
             for i in range(self.n):
                 for j in range(self.n):
-                    beta[t, i] += (self.a[i, j] * self.b[j].pdf(obs[t + 1]) * beta[t + 1][j])
+                    beta[t, i] += self.a[i, j] * self.b[j].pdf(obs[t+1]) * beta[t+1][j]
 
         return beta
 
@@ -111,8 +111,7 @@ class HMM:
         return probability, path
 
     def baum_welch(self, obs, steps):
-        np.random.seed(13)
-
+        obs_size = len(obs)
         train_results = np.zeros(steps)
 
         for step in range(steps):
@@ -123,12 +122,16 @@ class HMM:
                 for j in range(self.n):
                     self.a[i, j] = np.sum(gamma[:, i, j]) / np.sum(gamma[:, i, :])
 
-            for i in range(self.n):
+            for j in range(self.n):
                 for k in range(self.m):
-                    self.b[i].c[k] = np.sum(xi[:, i, k]) / np.sum(xi[:, i, :])
-                    self.b[i].mu[k] = np.sum(xi[:, i, k] * obs) / np.sum(xi[:, i, k])
-                    self.b[i].sigma[k] = np.sum(xi[:, i, k] * (obs-self.b[i].mu[k]) ** 2) / np.sum(xi[:, i, k])
+                    c = np.sum(xi[:, j, k]) / np.sum(xi[:, j, :])
+                    mu = np.sum(xi[:, j, k] * obs) / np.sum(xi[:, j, k])
+                    sigma = np.sum(xi[:, j, k] * np.power(obs - self.b[j].mu[k], 2)) / np.sum(xi[:, j, k])
 
-            train_results[step] = self.forward(obs)
+                    self.b[j].c[k] = c
+                    self.b[j].mu[k] = mu
+                    self.b[i].sigma[k] = sigma
+
+            # train_results[step] = self.forward(obs)
 
         return train_results

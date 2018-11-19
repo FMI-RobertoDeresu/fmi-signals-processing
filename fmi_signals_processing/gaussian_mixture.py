@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from scipy.stats import norm
 
@@ -14,7 +15,7 @@ class GaussianMixture:
         while True:
             gaussian_index = np.random.choice(range(self.n), p=self.c)
             mu, sigma = self.mu[gaussian_index], self.sigma[gaussian_index]
-            observation = norm.rvs(mu, sigma)
+            observation = norm.rvs(loc=mu, scale=math.sqrt(sigma))
             yield observation
 
     def generate(self):
@@ -22,8 +23,8 @@ class GaussianMixture:
 
     def component_pdf(self, k, observation):
         c, mu, sigma = self.c[k], self.mu[k], self.sigma[k]
-        # pdf = c * norm.pdf(observation, loc=mu, scale=sigma)
-        pdf = c * norm.pdf((observation - mu) / sigma)
+        pdf = c * norm.pdf(observation, loc=mu, scale=math.sqrt(sigma))
+        # pdf = c * norm.pdf((observation - mu) / sigma)
         return pdf
 
     def pdf(self, observation):
