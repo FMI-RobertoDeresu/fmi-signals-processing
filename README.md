@@ -15,3 +15,12 @@ La punctul 1, modelul HM este complet specificat (parametrii sunt cititi dintr-u
 La punctele 2 si 3, se aleg trei modele HM diferite, complet specificate. Unul dintre modele este folosit pentru generare de observatii. Secventele generate sunt apoi evaluate/decodate pe fiecare dintre cele 3 modele. La pasul 2 se afiseaza probabilitatea ca HMM sa fi generat secventa de observatii. La pasul 3 se afiseaza probabilitatea celei mai probabile secvente de stari care a produs secventa de observatii, precum si cea mai probabila secventa de stari.
 
 La punctul 4, se da un model HM complet specificat si se genereaza secvente de observatii. Apoi parametrii modelului se perturbeaza (putin), iar observatiile generate anterior se folosesc in antrenarea modelului perturbat. Se aplica algoritmul de evaluare pe modelul initial, pe modelul perturbat si pe modelul antrenat si se compara rezultatele. Se compara parametrii initiali ai modelului HM cu parametrii obtinuti dupa antrenare.
+
+## Proiect 2
+Sa se implementeze ICA prin:
+1. Metoda entropiei maxime;
+2. Minimizarea divergentei Kullback-Leibler.
+
+Ca input, se vor considera trei semnale unidimensionale, amestecate liniar cu o matrice (inversabila) de mixare A, la alegere. Pe langa semnale, se va specifica si lungimea acestora (N=1000, 5000, 10000 …). Pentru fiecare algoritm, se calculeaza indicele de performanta.
+
+Se vor afisa indicii de performanta pentru algoritmii 1, 2 si implementarea JADE.
